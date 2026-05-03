@@ -16,8 +16,8 @@
     "start:prod": "node dist/main",
     "lint": "biome lint --write .",
     "test:unit": "vitest run --config vitest.unit.config.ts",
-    "test:watch": "vitest",
-    "test:cov": "vitest run --coverage"
+    "test:unit:watch": "vitest --config vitest.unit.config.ts",
+    "test:unit:cov": "vitest run --config vitest.unit.config.ts --coverage"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
