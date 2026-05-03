@@ -44,7 +44,17 @@ export class Service extends Entity<ServiceProps> {
     return !this.props.deletedAt;
   }
 
-  touch() {
+  set name(name: string) {
+    this.props.name = name;
+    this.touch();
+  }
+
+  set price(price: Money) {
+    this.props.price = price;
+    this.touch();
+  }
+
+  private touch() {
     this.props.updatedAt = new Date();
   }
 

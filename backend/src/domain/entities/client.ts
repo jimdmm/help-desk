@@ -7,7 +7,7 @@ interface ClientProps {
   email: string;
   password: string;
   ticketsCreated: string[];
-  profileImage?: string;
+  profileImage?: string | undefined;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,7 +39,7 @@ export class Client extends Entity<ClientProps> {
   get ticketsCreated() {
     return this.props.ticketsCreated;
   }
-  get profileImage() {
+  get profileImage(): string | undefined {
     return this.props.profileImage;
   }
   get createdAt() {
@@ -49,7 +49,27 @@ export class Client extends Entity<ClientProps> {
     return this.props.updatedAt;
   }
 
-  touch() {
+  set name(name: string) {
+    this.props.name = name;
+    this.touch();
+  }
+
+  set email(email: string) {
+    this.props.email = email;
+    this.touch();
+  }
+
+  set password(password: string) {
+    this.props.password = password;
+    this.touch();
+  }
+
+  set profileImage(profileImage: string) {
+    this.props.profileImage = profileImage;
+    this.touch();
+  }
+
+  private touch() {
     this.props.updatedAt = new Date();
   }
 

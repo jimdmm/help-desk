@@ -12,6 +12,8 @@ import { TicketRequiresServicesError } from '../errors/ticket-requires-services-
 interface TicketProps {
   clientId: UniqueEntityId;
   technicianId: UniqueEntityId;
+  title: string;
+  description: string;
   status: TicketStatus;
   services: TicketServices[];
   createdAt: Date;
@@ -43,6 +45,8 @@ export class Ticket extends Entity<TicketProps> {
       {
         clientId: props.clientId,
         technicianId: props.technicianId,
+        title: props.title,
+        description: props.description,
         status: TicketStatus.create(),
         services: ticketServices,
         createdAt: new Date(),
@@ -52,24 +56,14 @@ export class Ticket extends Entity<TicketProps> {
     );
   }
 
-  get clientId() {
-    return this.props.clientId;
-  }
-  get technicianId() {
-    return this.props.technicianId;
-  }
-  get status() {
-    return this.props.status;
-  }
-  get services() {
-    return this.props.services;
-  }
-  get createdAt() {
-    return this.props.createdAt;
-  }
-  get updatedAt() {
-    return this.props.updatedAt;
-  }
+  get clientId() { return this.props.clientId; }
+  get technicianId() { return this.props.technicianId; }
+  get status() { return this.props.status; }
+  get services() { return this.props.services; }
+  get createdAt() { return this.props.createdAt; }
+  get updatedAt() { return this.props.updatedAt; }
+  get title() { return this.props.title; }
+  get description() { return this.props.description; }
 
   get total(): number {
     const cents = this.props.services.reduce(
@@ -77,6 +71,30 @@ export class Ticket extends Entity<TicketProps> {
       0,
     );
     return cents / 100;
+  }
+
+  set title(value: string) {
+    if (this.props.status.isClosed()) {
+      throw new TicketAlreadyClosedError();
+    }
+    this.props.title = value;
+    this.touch();
+  }
+
+  set status(value: TicketStatus) {
+    if (value.isClosed() && this.props.services.length === 0) {
+      throw new TicketRequiresServicesError();
+    }
+    this.props.status = value;
+    this.touch();
+  }
+
+  set description(value: string) {
+    if (this.props.status.isClosed()) {
+      throw new TicketAlreadyClosedError();
+    }
+    this.props.description = value;
+    this.touch();
   }
 
   addService(service: TicketServices): void {

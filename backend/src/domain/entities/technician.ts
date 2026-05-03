@@ -9,24 +9,20 @@ interface TechnicianProps {
   password: string;
   ticketsAssigned: string[];
   availability: Availability;
-  profileImage?: string;
+  profileImage?: string | undefined;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 }
 
 export class Technician extends Entity<TechnicianProps> {
   static create(
-    props: Optional<TechnicianProps, 'createdAt'> & {
-      availability?: string[];
-    },
+    props: Optional<TechnicianProps, 'createdAt'>,
     id?: UniqueEntityId,
   ): Technician {
     return new Technician(
       {
         ...props,
-        availability: props.availability
-          ? Availability.create(props.availability)
-          : Availability.createDefault(),
+        availability: props.availability,
         ticketsAssigned: [],
         createdAt: props.createdAt ?? new Date(),
       },
@@ -49,7 +45,7 @@ export class Technician extends Entity<TechnicianProps> {
   get availability() {
     return this.props.availability;
   }
-  get profileImage() {
+  get profileImage(): string | undefined {
     return this.props.profileImage;
   }
   get createdAt() {
@@ -57,6 +53,26 @@ export class Technician extends Entity<TechnicianProps> {
   }
   get updatedAt() {
     return this.props.updatedAt;
+  }
+
+  set name(name: string) {
+    this.props.name = name;
+    this.touch();
+  }
+
+  set email(email: string) {
+    this.props.email = email;
+    this.touch();
+  }
+
+  set password(password: string) {
+    this.props.password = password;
+    this.touch();
+  }
+
+  set profileImage(profileImage: string) {
+    this.props.profileImage = profileImage;
+    this.touch();
   }
 
   updateAvailability(schedules: string[]): void {
