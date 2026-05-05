@@ -9,7 +9,7 @@ interface ClientProps {
   ticketsCreated: string[];
   profileImage?: string | undefined;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 }
 
 export class Client extends Entity<ClientProps> {

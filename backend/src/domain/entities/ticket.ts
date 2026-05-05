@@ -17,7 +17,7 @@ interface TicketProps {
   status: TicketStatus;
   services: TicketServices[];
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 }
 
 export class Ticket extends Entity<TicketProps> {
@@ -47,10 +47,9 @@ export class Ticket extends Entity<TicketProps> {
         technicianId: props.technicianId,
         title: props.title,
         description: props.description,
-        status: TicketStatus.create(),
+        status: props.status,
         services: ticketServices,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: props.createdAt ?? new Date(),
       },
       id,
     );
