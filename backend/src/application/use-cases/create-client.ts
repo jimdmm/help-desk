@@ -14,7 +14,7 @@ export class CreateClientUseCase {
   constructor(
     private clientRepository: ClientRepository,
     private hashGenerator: HashGenerator,
-  ) {}
+  ) { }
 
   async execute({
     name,
@@ -31,8 +31,6 @@ export class CreateClientUseCase {
       name,
       email,
       password: hashedPassword,
-      ticketsCreated: [],
-      updatedAt: new Date(),
     });
 
     await this.clientRepository.create(client);

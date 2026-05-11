@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [swc.vite({ module: { type: 'es6' } })],
   test: {
     name: 'unit',
-    include: ['src/**/*.spec.ts'],
+    include: ['test/unit/**/*.spec.ts'],
     environment: 'node',
     globals: true,
     coverage: {
