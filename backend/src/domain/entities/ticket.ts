@@ -6,6 +6,7 @@ import {
   type TicketStatusType,
 } from '../value-objects/ticketStatus';
 import { TicketServices } from './ticket-services';
+import { TicketServicesList } from './ticket-services-list';
 import { TicketAlreadyClosedError } from '../errors/ticket-already-closed-error';
 import { TicketRequiresServicesError } from '../errors/ticket-requires-services-error';
 
@@ -15,7 +16,7 @@ interface TicketProps {
   title: string;
   description: string;
   status: TicketStatus;
-  services: TicketServices[];
+  services: TicketServicesList;
   createdAt: Date;
   updatedAt?: Date;
 }
@@ -26,20 +27,14 @@ export class Ticket extends Entity<TicketProps> {
   }
 
   static create(
-    props: Optional<TicketProps, 'createdAt'>,
+    props: Optional<TicketProps, 'createdAt' | 'status'>,
     id?: UniqueEntityId,
   ): Ticket {
-    if (!props.services || props.services.length === 0) {
+    const services = props.services ?? new TicketServicesList();
+
+    if (services.getItems().length === 0) {
       throw new TicketRequiresServicesError();
     }
-
-    const ticketServices = props.services.map((s) =>
-      TicketServices.create({
-        serviceId: s.serviceId,
-        serviceName: s.serviceName,
-        price: s.price,
-      }),
-    );
 
     return new Ticket(
       {
@@ -47,25 +42,41 @@ export class Ticket extends Entity<TicketProps> {
         technicianId: props.technicianId,
         title: props.title,
         description: props.description,
-        status: props.status,
-        services: ticketServices,
+        status: props.status ?? TicketStatus.create(),
+        services,
         createdAt: props.createdAt ?? new Date(),
       },
       id,
     );
   }
 
-  get clientId() { return this.props.clientId; }
-  get technicianId() { return this.props.technicianId; }
-  get status() { return this.props.status; }
-  get services() { return this.props.services; }
-  get createdAt() { return this.props.createdAt; }
-  get updatedAt() { return this.props.updatedAt; }
-  get title() { return this.props.title; }
-  get description() { return this.props.description; }
+  get clientId() {
+    return this.props.clientId;
+  }
+  get technicianId() {
+    return this.props.technicianId;
+  }
+  get status() {
+    return this.props.status;
+  }
+  get services(): TicketServicesList {
+    return this.props.services;
+  }
+  get createdAt() {
+    return this.props.createdAt;
+  }
+  get updatedAt() {
+    return this.props.updatedAt;
+  }
+  get title() {
+    return this.props.title;
+  }
+  get description() {
+    return this.props.description;
+  }
 
   get total(): number {
-    const cents = this.props.services.reduce(
+    const cents = this.props.services.getItems().reduce(
       (acc, cs) => acc + Math.round(cs.price.value * 100),
       0,
     );
@@ -81,7 +92,7 @@ export class Ticket extends Entity<TicketProps> {
   }
 
   set status(value: TicketStatus) {
-    if (value.isClosed() && this.props.services.length === 0) {
+    if (value.isClosed() && this.props.services.getItems().length === 0) {
       throw new TicketRequiresServicesError();
     }
     this.props.status = value;
@@ -101,14 +112,16 @@ export class Ticket extends Entity<TicketProps> {
       throw new TicketAlreadyClosedError();
     }
 
-    this.props.services.push(
-      TicketServices.create({
-        serviceId: service.serviceId,
-        serviceName: service.serviceName,
-        price: service.price,
-      }),
-    );
+    this.props.services.add(service);
+    this.touch();
+  }
 
+  removeService(service: TicketServices): void {
+    if (this.props.status.isClosed()) {
+      throw new TicketAlreadyClosedError();
+    }
+
+    this.props.services.remove(service);
     this.touch();
   }
 

@@ -12,15 +12,15 @@ export class Money extends ValueObject<MoneyProps> {
 
   static create(value: number): Money {
     if (value === null || value === undefined) {
-      throw new InvalidMoneyValueError('Valor não pode ser nulo.');
+      throw new InvalidMoneyValueError('Value must not be null or undefined.');
     }
 
     if (typeof value !== 'number' || isNaN(value)) {
-      throw new InvalidMoneyValueError('Valor deve ser um número válido.');
+      throw new InvalidMoneyValueError('Value must be a valid number.');
     }
 
     if (value <= 0) {
-      throw new InvalidMoneyValueError('Valor deve ser maior que zero.');
+      throw new InvalidMoneyValueError('Value must be greater than zero.');
     }
 
     const rounded = Math.round(value * 100) / 100;

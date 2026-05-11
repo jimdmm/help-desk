@@ -3,10 +3,10 @@ import type { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import type { ServiceAlreadyInactiveError } from '../errors/service-already-inactive-error';
 
 export interface DeactivateServiceUseCaseRequestDTO {
-	serviceId: string;
+  serviceId: string;
 }
 
 export type DeactivateServiceUseCaseResponseDTO = Either<
-	ResourceNotFoundError | ServiceAlreadyInactiveError,
-	null
+  ResourceNotFoundError | ServiceAlreadyInactiveError,
+  null
 >;

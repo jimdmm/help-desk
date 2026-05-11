@@ -3,23 +3,23 @@ import { Service } from '@/domain/entities/service';
 import { ServiceRepository } from '@/domain/ports/service-repository';
 import { Money } from '@/domain/value-objects/money';
 import type {
-	CreateServiceUseCaseRequestDTO,
-	CreateServiceUseCaseResponseDTO,
+  CreateServiceUseCaseRequestDTO,
+  CreateServiceUseCaseResponseDTO,
 } from '@/application/dtos/create-service-dto';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CreateServiceUseCase {
-	constructor(private serviceRepository: ServiceRepository) { }
+  constructor(private serviceRepository: ServiceRepository) {}
 
-	async execute({
-		name,
-		price,
-	}: CreateServiceUseCaseRequestDTO): Promise<CreateServiceUseCaseResponseDTO> {
-		const service = Service.create({ name, price: Money.create(price) });
+  async execute({
+    name,
+    price,
+  }: CreateServiceUseCaseRequestDTO): Promise<CreateServiceUseCaseResponseDTO> {
+    const service = Service.create({ name, price: Money.create(price) });
 
-		await this.serviceRepository.create(service);
+    await this.serviceRepository.create(service);
 
-		return right({ service });
-	}
+    return right({ service });
+  }
 }

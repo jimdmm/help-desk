@@ -4,9 +4,9 @@ import { ClientRepository } from '@/domain/ports/client-repository';
 
 @Injectable()
 export class FetchAllClientsUseCase {
-	constructor(private clientRepository: ClientRepository) { }
+  constructor(private clientRepository: ClientRepository) {}
 
-	async execute(): Promise<Client[]> {
-		return this.clientRepository.fetchAll();
-	}
+  async execute(): Promise<Client[]> {
+    return this.clientRepository.fetchAll();
+  }
 }

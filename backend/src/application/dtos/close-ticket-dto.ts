@@ -4,11 +4,11 @@ import type { ResourceNotFoundError } from '../errors/resource-not-found-error';
 import type { NotAllowedError } from '../errors/not-allowed-error';
 
 export interface CloseTicketUseCaseRequestDTO {
-	technicianId: string;
-	ticketId: string;
+  technicianId: string;
+  ticketId: string;
 }
 
 export type CloseTicketUseCaseResponseDTO = Either<
-	ResourceNotFoundError | NotAllowedError,
-	{ ticket: Ticket }
+  ResourceNotFoundError | NotAllowedError,
+  { ticket: Ticket }
 >;

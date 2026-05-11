@@ -4,9 +4,9 @@ import { TicketRepository } from '@/domain/ports/ticket-repository';
 
 @Injectable()
 export class FetchClientTicketsUseCase {
-	constructor(private ticketRepository: TicketRepository) { }
+  constructor(private ticketRepository: TicketRepository) {}
 
-	async execute(clientId: string): Promise<Ticket[]> {
-		return this.ticketRepository.fetchByClientId(clientId);
-	}
+  async execute(clientId: string): Promise<Ticket[]> {
+    return this.ticketRepository.fetchByClientId(clientId);
+  }
 }
