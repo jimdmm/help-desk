@@ -15,7 +15,7 @@ export class CreateTechnicianUseCase {
   constructor(
     private technicianRepository: TechnicianRepository,
     private hashGenerator: HashGenerator,
-  ) {}
+  ) { }
 
   async execute({
     name,
@@ -42,7 +42,6 @@ export class CreateTechnicianUseCase {
       email,
       password: hashedPassword,
       availability: availabilityConfig,
-      ticketsAssigned: [],
     });
 
     await this.technicianRepository.create(technician);

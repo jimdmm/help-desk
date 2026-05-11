@@ -27,7 +27,7 @@ export class TicketStatus extends ValueObject<{ value: TicketStatusType }> {
 
     if (!allowed.includes(next)) {
       throw new InvalidTransactionError(
-        `Transação inválida: ${this.props.value} → ${next}`,
+        `Invalid Transaction: ${this.props.value} → ${next}`,
       );
     }
 

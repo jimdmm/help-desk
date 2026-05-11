@@ -1,7 +1,6 @@
 import { left, right } from '@/domain/core/either';
 import { Ticket } from '@/domain/entities/ticket';
 import { TicketServices } from '@/domain/entities/ticket-services';
-import { UniqueEntityId } from '@/domain/core/unique-entity-id';
 import { TicketRepository } from '@/domain/ports/ticket-repository';
 import { ClientRepository } from '@/domain/ports/client-repository';
 import { TechnicianRepository } from '@/domain/ports/technician-repository';
@@ -13,6 +12,7 @@ import type {
 } from '@/application/dtos/create-ticket-dto';
 import { Injectable } from '@nestjs/common';
 import { TicketStatus } from '@/domain/value-objects/ticketStatus';
+import { TicketServicesList } from '@/domain/entities/ticket-services-list';
 
 @Injectable()
 export class CreateTicketUseCase {
@@ -21,7 +21,7 @@ export class CreateTicketUseCase {
     private clientRepository: ClientRepository,
     private technicianRepository: TechnicianRepository,
     private serviceRepository: ServiceRepository,
-  ) {}
+  ) { }
 
   async execute({
     clientId,
@@ -36,16 +36,16 @@ export class CreateTicketUseCase {
     const technician = await this.technicianRepository.findById(technicianId);
     if (!technician) return left(new ResourceNotFoundError('Technician'));
 
-    const ticketServices: TicketServices[] = [];
+    const ticketServicesList: TicketServicesList = new TicketServicesList();
 
     for (const serviceId of serviceIds) {
       const service = await this.serviceRepository.findById(serviceId);
 
       if (!service) return left(new ResourceNotFoundError('Service'));
 
-      ticketServices.push(
+      ticketServicesList.add(
         TicketServices.create({
-          serviceId: new UniqueEntityId(service.id.toString()),
+          serviceId: service.id,
           serviceName: service.name,
           price: service.price,
         }),
@@ -53,21 +53,15 @@ export class CreateTicketUseCase {
     }
 
     const ticket = Ticket.create({
-      clientId: new UniqueEntityId(clientId),
-      technicianId: new UniqueEntityId(technicianId),
+      clientId: client.id,
+      technicianId: technician.id,
       title,
       description,
-      services: ticketServices,
+      services: ticketServicesList,
       status: TicketStatus.create(),
     });
 
     await this.ticketRepository.create(ticket);
-
-    client.createTicket(ticket.id.toString());
-    await this.clientRepository.save(client);
-
-    technician.assignToTicket(ticket.id.toString());
-    await this.technicianRepository.save(technician);
 
     return right({ ticket });
   }

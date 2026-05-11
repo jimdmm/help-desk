@@ -7,7 +7,6 @@ interface TechnicianProps {
   name: string;
   email: string;
   password: string;
-  ticketsAssigned: string[];
   availability: Availability;
   profileImage?: string | undefined;
   createdAt: Date;
@@ -23,7 +22,6 @@ export class Technician extends Entity<TechnicianProps> {
       {
         ...props,
         availability: props.availability,
-        ticketsAssigned: [],
         createdAt: props.createdAt ?? new Date(),
       },
       id,
@@ -38,9 +36,6 @@ export class Technician extends Entity<TechnicianProps> {
   }
   get password() {
     return this.props.password;
-  }
-  get ticketsAssigned() {
-    return this.props.ticketsAssigned;
   }
   get availability() {
     return this.props.availability;
@@ -82,23 +77,6 @@ export class Technician extends Entity<TechnicianProps> {
 
   isAvailableAt(schedule: string): boolean {
     return this.props.availability.hasSchedule(schedule);
-  }
-
-  assignToTicket(ticketId: string) {
-    this.props.ticketsAssigned.push(ticketId);
-  }
-
-  unassignToTicket(ticketId: string): boolean {
-    const ticketIndex = this.props.ticketsAssigned.findIndex(
-      (id) => id === ticketId,
-    );
-
-    if (ticketIndex === -1) {
-      return false;
-    }
-
-    this.props.ticketsAssigned.splice(ticketIndex, 1);
-    return true;
   }
 
   private touch(): void {

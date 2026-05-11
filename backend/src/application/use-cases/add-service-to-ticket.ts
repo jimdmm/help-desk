@@ -16,7 +16,7 @@ export class AddServiceToTicketUseCase {
   constructor(
     private ticketRepository: TicketRepository,
     private serviceRepository: ServiceRepository,
-  ) {}
+  ) { }
 
   async execute({
     technicianId,
@@ -36,7 +36,7 @@ export class AddServiceToTicketUseCase {
     if (!service) return left(new ResourceNotFoundError('Service'));
 
     const ticketService = TicketServices.create({
-      serviceId: new UniqueEntityId(service.id.toString()),
+      serviceId: service.id,
       serviceName: service.name,
       price: service.price,
     });
