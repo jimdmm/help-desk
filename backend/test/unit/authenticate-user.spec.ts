@@ -2,15 +2,18 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { AuthenticateUserUseCase } from '@/application/use-cases/authenticate-user';
 import { InMemoryClientRepository } from '../repositories/in-memory-client-repository';
 import { InMemoryTechnicianRepository } from '../repositories/in-memory-technician-repository';
+import { InMemoryAdminRepository } from '../repositories/in-memory-admin-repository';
 import { FakeHasher } from '../cryptography/fake-hasher';
 import { FakeEncrypter } from '../cryptography/fake-encrypter';
 import { makeClient } from '../factories/make-client';
 import { makeTechnician } from '../factories/make-technician';
+import { makeAdmin } from '../factories/make-admin';
 import { InvalidCredentialsError } from '@/application/errors/invalid-credentials-error';
 
 describe('AuthenticateUserUseCase', () => {
 	let clientRepository: InMemoryClientRepository;
 	let technicianRepository: InMemoryTechnicianRepository;
+	let adminRepository: InMemoryAdminRepository;
 	let hasher: FakeHasher;
 	let encrypter: FakeEncrypter;
 	let sut: AuthenticateUserUseCase;
@@ -18,11 +21,13 @@ describe('AuthenticateUserUseCase', () => {
 	beforeEach(() => {
 		clientRepository = new InMemoryClientRepository();
 		technicianRepository = new InMemoryTechnicianRepository();
+		adminRepository = new InMemoryAdminRepository();
 		hasher = new FakeHasher();
 		encrypter = new FakeEncrypter();
 		sut = new AuthenticateUserUseCase(
 			clientRepository,
 			technicianRepository,
+			adminRepository,
 			hasher,
 			encrypter,
 		);
@@ -58,6 +63,23 @@ describe('AuthenticateUserUseCase', () => {
 		if (result.isRight()) {
 			const payload = JSON.parse(result.value.accessToken);
 			expect(payload.role).toBe('TECHNICIAN');
+		}
+	});
+
+	it('should authenticate an admin and return an access token', async () => {
+		const admin = makeAdmin({ email: 'admin@example.com', password: '123456-hashed' });
+		await adminRepository.create(admin);
+
+		const result = await sut.execute({
+			email: 'admin@example.com',
+			password: '123456',
+		});
+
+		expect(result.isRight()).toBe(true);
+		if (result.isRight()) {
+			const payload = JSON.parse(result.value.accessToken);
+			expect(payload.role).toBe('ADMIN');
+			expect(payload.sub).toBe(admin.id.toString());
 		}
 	});
 
