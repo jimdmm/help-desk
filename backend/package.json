@@ -6,6 +6,9 @@
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "build": "nest build",
     "format": "biome format --write .",
@@ -15,6 +18,8 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "biome lint --write .",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
     "test:unit": "vitest run --config vitest.unit.config.ts",
     "test:unit:watch": "vitest --config vitest.unit.config.ts",
     "test:unit:cov": "vitest run --config vitest.unit.config.ts --coverage"
@@ -31,6 +36,7 @@
     "@supabase/supabase-js": "^2.107.0",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
+    "ioredis": "^5.11.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.21.0",
@@ -49,6 +55,7 @@
     "@swc/helpers": "^0.5.21",
     "@types/bcryptjs": "^3.0.0",
     "@types/express": "^5.0.0",
+    "@types/multer": "^2.1.0",
     "@types/node": "^24.0.0",
     "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.20.0",
@@ -61,6 +68,7 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.22.4",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0",
     "unplugin-swc": "^1.5.9",

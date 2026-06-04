@@ -1,5 +1,6 @@
 import { ClientRepository } from "@/domain/ports/client-repository"
 import { TechnicianRepository } from "@/domain/ports/technician-repository"
+import { AdminRepository } from "@/domain/ports/admin-repository"
 import { HashComparer } from "../cryptography/hash-comparer"
 import { Encrypter } from "../cryptography/encrypter"
 import { Injectable } from "@nestjs/common"
@@ -13,6 +14,7 @@ export class AuthenticateUserUseCase {
 	constructor(
 		private clientRepository: ClientRepository,
 		private technicianRepository: TechnicianRepository,
+		private adminRepository: AdminRepository,
 		private hashComparer: HashComparer,
 		private encrypter: Encrypter
 	) { }
@@ -21,10 +23,11 @@ export class AuthenticateUserUseCase {
 		email,
 		password,
 	}: AuthenticateUserUseCaseRequestDTO): Promise<AuthenticateUserUseCaseResponseDTO> {
-		const client = await this.clientRepository.findByEmail(email)
-		const technician = await this.technicianRepository.findByEmail(email)
+		const admin = await this.adminRepository.findByEmail(email)
+		const client = admin ? null : await this.clientRepository.findByEmail(email)
+		const technician = (admin || client) ? null : await this.technicianRepository.findByEmail(email)
 
-		const user = client ?? technician
+		const user = admin ?? client ?? technician
 
 		if (!user) {
 			return left(new InvalidCredentialsError())
@@ -39,7 +42,7 @@ export class AuthenticateUserUseCase {
 			return left(new InvalidCredentialsError())
 		}
 
-		const role = client ? 'CLIENT' : 'TECHNICIAN'
+		const role = admin ? 'ADMIN' : client ? 'CLIENT' : 'TECHNICIAN'
 
 		const accessToken = await this.encrypter.encrypt({
 			sub: user.id.toString(),
