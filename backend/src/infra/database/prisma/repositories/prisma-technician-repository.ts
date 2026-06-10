@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import type { TechnicianRepository } from '@/domain/ports/technician-repository'
-import type { PaginatedResult, PaginationParams } from '@/application/dtos/pagination-dto'
+import type { PaginatedResult, PaginationParams } from '@/domain/core/pagination'
 import type { Technician } from '@/domain/entities/technician'
 import { PrismaService } from '../prisma.service'
 import { PrismaTechnicianMapper } from '../mappers/prisma-technician-mapper'

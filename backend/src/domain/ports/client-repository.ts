@@ -1,4 +1,4 @@
-import type { PaginatedResult, PaginationParams } from '@/application/dtos/pagination-dto'
+import type { PaginatedResult, PaginationParams } from '@/domain/core/pagination'
 import type { Client } from '../entities/client'
 
 export abstract class ClientRepository {

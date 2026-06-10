@@ -1,4 +1,4 @@
-import type { PaginatedResult, PaginationParams } from '@/application/dtos/pagination-dto'
+import type { PaginatedResult, PaginationParams } from '@/domain/core/pagination'
 import { ServiceRepository } from '@/domain/ports/service-repository'
 import { Service } from '@/domain/entities/service'
 

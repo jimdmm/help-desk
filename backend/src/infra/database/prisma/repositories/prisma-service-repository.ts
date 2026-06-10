@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import type { ServiceRepository } from '@/domain/ports/service-repository'
-import type { PaginatedResult, PaginationParams } from '@/application/dtos/pagination-dto'
+import type { PaginatedResult, PaginationParams } from '@/domain/core/pagination'
 import type { Service } from '@/domain/entities/service'
 import { PrismaService } from '../prisma.service'
 import { PrismaServiceMapper } from '../mappers/prisma-service-mapper'

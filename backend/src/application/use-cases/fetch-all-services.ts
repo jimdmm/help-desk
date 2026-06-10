@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import type { PaginatedResult, PaginationParams } from '@/application/dtos/pagination-dto'
+import type { PaginatedResult, PaginationParams } from '@/domain/core/pagination'
 import type { Service } from '@/domain/entities/service'
 import { ServiceRepository } from '@/domain/ports/service-repository'
 
