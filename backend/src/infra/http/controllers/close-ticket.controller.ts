@@ -7,9 +7,9 @@ import {
   Param,
   Patch,
 } from '@nestjs/common'
-import { Roles } from '@/infra/auth/roles'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import type { UserPayload } from '@/infra/auth/jwt.strategy'
+import { Roles } from '@/infra/auth/decorators/roles'
+import { CurrentUser } from '@/infra/auth/decorators/current-user-decorator'
+import type { UserPayload } from '@/infra/auth/strategies/jwt.strategy'
 import { CloseTicketUseCase } from '@/application/use-cases/close-ticket'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { NotAllowedError } from '@/application/errors/not-allowed-error'
@@ -18,7 +18,7 @@ import { DomainError } from '@/domain/core/errors/domain-error'
 @Roles('TECHNICIAN')
 @Controller('/tickets/:id/close')
 export class CloseTicketController {
-  constructor(private closeTicket: CloseTicketUseCase) {}
+  constructor(private closeTicket: CloseTicketUseCase) { }
 
   @Patch()
   @HttpCode(204)

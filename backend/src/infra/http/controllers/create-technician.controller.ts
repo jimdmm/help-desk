@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Roles } from '@/infra/auth/roles'
+import { Roles } from '@/infra/auth/decorators/roles'
 import { CreateTechnicianUseCase } from '@/application/use-cases/create-technician'
 import { UserAlreadyExistsError } from '@/application/errors/user-already-exists-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
@@ -25,7 +25,7 @@ type Body = z.infer<typeof bodySchema>
 @Roles('ADMIN')
 @Controller('/technicians')
 export class CreateTechnicianController {
-  constructor(private createTechnician: CreateTechnicianUseCase) {}
+  constructor(private createTechnician: CreateTechnicianUseCase) { }
 
   @Post()
   @HttpCode(201)

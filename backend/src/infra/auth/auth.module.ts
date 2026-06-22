@@ -4,9 +4,9 @@ import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { EnvModule } from '../env/env.module'
 import { EnvService } from '../env/env.service'
-import { JwtAuthGuard } from './jwt-auth.guard'
-import { JwtStrategy } from './jwt.strategy'
-import { RolesGuard } from './roles.guard'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
+import { RolesGuard } from '../guards/roles.guard'
+import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
   imports: [
@@ -40,4 +40,4 @@ import { RolesGuard } from './roles.guard'
     },
   ],
 })
-export class AuthModule {}
+export class AuthModule { }

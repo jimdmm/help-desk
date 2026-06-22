@@ -6,7 +6,7 @@ import {
   Param,
   Patch,
 } from '@nestjs/common'
-import { Roles } from '@/infra/auth/roles'
+import { Roles } from '@/infra/auth/decorators/roles'
 import { DeactivateServiceUseCase } from '@/application/use-cases/deactivate-service'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { ServiceAlreadyInactiveError } from '@/application/errors/service-already-inactive-error'
@@ -19,7 +19,7 @@ export class DeactivateServiceController {
   constructor(
     private deactivateService: DeactivateServiceUseCase,
     private cache: RedisCacheService,
-  ) {}
+  ) { }
 
   @Patch()
   @HttpCode(204)

@@ -5,13 +5,13 @@ import {
   Injectable,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import type { UserPayload } from './jwt.strategy'
-import type { UserRole } from './roles'
-import { ROLES_KEY } from './roles'
+import type { UserPayload } from '../auth/jwt.strategy'
+import type { UserRole } from '../auth/decorators/roles'
+import { ROLES_KEY } from '../auth/decorators/roles'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private reflector: Reflector) { }
 
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Public } from '@/infra/auth/public'
+import { Public } from '@/infra/auth/decorators/public'
 import { CreateClientUseCase } from '@/application/use-cases/create-client'
 import { UserAlreadyExistsError } from '@/application/errors/user-already-exists-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
@@ -24,7 +24,7 @@ type Body = z.infer<typeof bodySchema>
 @Public()
 @Controller('/clients')
 export class CreateClientController {
-  constructor(private createClient: CreateClientUseCase) {}
+  constructor(private createClient: CreateClientUseCase) { }
 
   @Post()
   @HttpCode(201)

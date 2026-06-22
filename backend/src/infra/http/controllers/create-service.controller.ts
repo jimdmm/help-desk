@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Roles } from '@/infra/auth/roles'
+import { Roles } from '@/infra/auth/decorators/roles'
 import { CreateServiceUseCase } from '@/application/use-cases/create-service'
 
 const bodySchema = z.object({
@@ -20,7 +20,7 @@ type Body = z.infer<typeof bodySchema>
 @Roles('ADMIN')
 @Controller('/services')
 export class CreateServiceController {
-  constructor(private createService: CreateServiceUseCase) {}
+  constructor(private createService: CreateServiceUseCase) { }
 
   @Post()
   @HttpCode(201)

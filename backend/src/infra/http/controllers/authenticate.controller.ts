@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Public } from '@/infra/auth/public'
+import { Public } from '@/infra/auth/decorators/public'
 import { AuthenticateUserUseCase } from '@/application/use-cases/authenticate-user'
 import { InvalidCredentialsError } from '@/application/errors/invalid-credentials-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
@@ -23,7 +23,7 @@ type Body = z.infer<typeof bodySchema>
 @Public()
 @Controller('/sessions')
 export class AuthenticateController {
-  constructor(private authenticateUser: AuthenticateUserUseCase) {}
+  constructor(private authenticateUser: AuthenticateUserUseCase) { }
 
   @Post()
   @HttpCode(200)

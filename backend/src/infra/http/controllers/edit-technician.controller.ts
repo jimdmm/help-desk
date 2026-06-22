@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import type { UserPayload } from '@/infra/auth/jwt.strategy'
+import { CurrentUser } from '@/infra/auth/decorators/current-user-decorator'
+import type { UserPayload } from '@/infra/auth/strategies/jwt.strategy'
 import { EditTechnicianUseCase } from '@/application/use-cases/edit-technician'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
@@ -25,7 +25,7 @@ type Body = z.infer<typeof bodySchema>
 
 @Controller('/technicians/:id')
 export class EditTechnicianController {
-  constructor(private editTechnician: EditTechnicianUseCase) {}
+  constructor(private editTechnician: EditTechnicianUseCase) { }
 
   @Put()
   async handle(

@@ -15,7 +15,7 @@ describe('Authentication (E2E)', () => {
   let prisma: PrismaService
 
   beforeAll(async () => {
-    ;({ app, prisma } = await createApp())
+    ({ app, prisma } = await createApp())
   })
 
   afterAll(async () => {
@@ -31,7 +31,7 @@ describe('Authentication (E2E)', () => {
 
     expect(token).toBeDefined()
     expect(typeof token).toBe('string')
-    expect(token.split('.')).toHaveLength(3) // valid JWT format
+    expect(token.split('.')).toHaveLength(3)
   })
 
   it('POST /sessions → authenticates a technician and returns access_token', async () => {

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Roles } from '@/infra/auth/roles'
+import { Roles } from '@/infra/auth/decorators/roles'
 import { EditServiceUseCase } from '@/application/use-cases/edit-service'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
@@ -27,7 +27,7 @@ export class EditServiceController {
   constructor(
     private editService: EditServiceUseCase,
     private cache: RedisCacheService,
-  ) {}
+  ) { }
 
   @Put()
   async handle(

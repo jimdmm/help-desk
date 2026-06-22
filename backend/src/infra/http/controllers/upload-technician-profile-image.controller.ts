@@ -9,8 +9,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import type { UserPayload } from '@/infra/auth/jwt.strategy'
+import { CurrentUser } from '@/infra/auth/decorators/current-user-decorator'
+import type { UserPayload } from '@/infra/auth/strategies/jwt.strategy'
 import { UploadTechnicianProfileImageUseCase } from '@/application/use-cases/upload-technician-profile-image'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
@@ -19,7 +19,7 @@ import { DomainError } from '@/domain/core/errors/domain-error'
 export class UploadTechnicianProfileImageController {
   constructor(
     private uploadTechnicianProfileImage: UploadTechnicianProfileImageUseCase,
-  ) {}
+  ) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))

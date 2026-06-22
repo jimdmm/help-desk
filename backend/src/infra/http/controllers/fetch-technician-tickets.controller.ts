@@ -1,9 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Roles } from '@/infra/auth/roles'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import type { UserPayload } from '@/infra/auth/jwt.strategy'
+import { Roles } from '@/infra/auth/decorators/roles'
+import { CurrentUser } from '@/infra/auth/decorators/current-user-decorator'
+import type { UserPayload } from '@/infra/auth/strategies/jwt.strategy'
 import { FetchTechnicianTicketsUseCase } from '@/application/use-cases/fetch-technician-tickets'
 
 const querySchema = z.object({
@@ -16,7 +16,7 @@ type Query = z.infer<typeof querySchema>
 @Roles('TECHNICIAN')
 @Controller('/tickets/assigned')
 export class FetchTechnicianTicketsController {
-  constructor(private fetchTechnicianTickets: FetchTechnicianTicketsUseCase) {}
+  constructor(private fetchTechnicianTickets: FetchTechnicianTicketsUseCase) { }
 
   @Get()
   async handle(

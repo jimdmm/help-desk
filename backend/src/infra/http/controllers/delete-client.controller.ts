@@ -7,15 +7,15 @@ import {
   NotFoundException,
   Param,
 } from '@nestjs/common'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import type { UserPayload } from '@/infra/auth/jwt.strategy'
+import { CurrentUser } from '@/infra/auth/decorators/current-user-decorator'
+import type { UserPayload } from '@/infra/auth/strategies/jwt.strategy'
 import { DeleteClientUseCase } from '@/application/use-cases/delete-client'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
 
 @Controller('/clients/:id')
 export class DeleteClientController {
-  constructor(private deleteClient: DeleteClientUseCase) {}
+  constructor(private deleteClient: DeleteClientUseCase) { }
 
   @Delete()
   @HttpCode(204)

@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Roles } from '@/infra/auth/roles'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import type { UserPayload } from '@/infra/auth/jwt.strategy'
+import { Roles } from '@/infra/auth/decorators/roles'
+import { CurrentUser } from '@/infra/auth/decorators/current-user-decorator'
+import type { UserPayload } from '@/infra/auth/strategies/jwt.strategy'
 import { CreateTicketUseCase } from '@/application/use-cases/create-ticket'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
@@ -27,7 +27,7 @@ type Body = z.infer<typeof bodySchema>
 @Roles('CLIENT')
 @Controller('/tickets')
 export class CreateTicketController {
-  constructor(private createTicket: CreateTicketUseCase) {}
+  constructor(private createTicket: CreateTicketUseCase) { }
 
   @Post()
   @HttpCode(201)

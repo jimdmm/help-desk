@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Roles } from '@/infra/auth/roles'
+import { Roles } from '@/infra/auth/decorators/roles'
 import { FetchAllClientsUseCase } from '@/application/use-cases/fetch-all-clients'
 
 const querySchema = z.object({
@@ -13,7 +13,7 @@ type Query = z.infer<typeof querySchema>
 
 @Controller('/clients')
 export class FetchAllClientsController {
-  constructor(private fetchAllClients: FetchAllClientsUseCase) {}
+  constructor(private fetchAllClients: FetchAllClientsUseCase) { }
 
   @Get()
   @Roles('ADMIN')

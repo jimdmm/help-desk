@@ -14,7 +14,7 @@ describe('Clients (E2E)', () => {
   let prisma: PrismaService
 
   beforeAll(async () => {
-    ;({ app, prisma } = await createApp())
+    ({ app, prisma } = await createApp())
   })
 
   afterAll(async () => {

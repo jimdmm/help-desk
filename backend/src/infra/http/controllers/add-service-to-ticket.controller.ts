@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { Roles } from '@/infra/auth/roles'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import type { UserPayload } from '@/infra/auth/jwt.strategy'
+import { Roles } from '@/infra/auth/decorators/roles'
+import { CurrentUser } from '@/infra/auth/decorators/current-user-decorator'
+import type { UserPayload } from '@/infra/auth/strategies/jwt.strategy'
 import { AddServiceToTicketUseCase } from '@/application/use-cases/add-service-to-ticket'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { NotAllowedError } from '@/application/errors/not-allowed-error'
@@ -27,7 +27,7 @@ type Body = z.infer<typeof bodySchema>
 @Roles('TECHNICIAN')
 @Controller('/tickets/:id/services')
 export class AddServiceToTicketController {
-  constructor(private addServiceToTicket: AddServiceToTicketUseCase) {}
+  constructor(private addServiceToTicket: AddServiceToTicketUseCase) { }
 
   @Post()
   @HttpCode(204)

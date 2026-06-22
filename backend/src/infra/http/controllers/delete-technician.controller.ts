@@ -6,7 +6,7 @@ import {
   NotFoundException,
   Param,
 } from '@nestjs/common'
-import { Roles } from '@/infra/auth/roles'
+import { Roles } from '@/infra/auth/decorators/roles'
 import { DeleteTechnicianUseCase } from '@/application/use-cases/delete-technician'
 import { ResourceNotFoundError } from '@/application/errors/resource-not-found-error'
 import { DomainError } from '@/domain/core/errors/domain-error'
@@ -14,7 +14,7 @@ import { DomainError } from '@/domain/core/errors/domain-error'
 @Roles('ADMIN')
 @Controller('/technicians/:id')
 export class DeleteTechnicianController {
-  constructor(private deleteTechnician: DeleteTechnicianUseCase) {}
+  constructor(private deleteTechnician: DeleteTechnicianUseCase) { }
 
   @Delete()
   @HttpCode(204)
